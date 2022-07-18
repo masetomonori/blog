@@ -25,13 +25,13 @@ def get_db():
 def index():
     return "hello"
 
-@app.post('/blog', tags=['blogs'])
-def create(blog: Blog, db: Session = Depends(get_db)):
-    new_blog = models.Blog(title=blog.title, body=blog.body)
-    db.add(new_blog)
-    db.commit()
-    db.refresh(new_blog)
-    return new_blog
+#@app.post('/blog', tags=['blogs'])
+#def create(blog: Blog, db: Session = Depends(get_db)):
+#    new_blog = models.Blog(title=blog.title, body=blog.body)
+#    db.add(new_blog)
+#    db.commit()
+#    db.refresh(new_blog)
+#    return new_blog
 
 @app.get('/blog', response_model=List[ShowBlog], tags=['blogs'])
 def all_fetch(db: Session = Depends(get_db)):
@@ -50,7 +50,8 @@ def show(id: int, response: Response, db: Session = Depends(get_db)):
 
 @app.post('/blog', status_code=status.HTTP_201_CREATED, tags=['blogs'])
 def create(blog:Blog, db: Session = Depends(get_db)):
-    new_blog = models.Blog(title=blog.title, body=blog.bldy)
+    # user_idをハードコーディング
+    new_blog = models.Blog(title=blog.title, body=blog.body, user_id="1")
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)
