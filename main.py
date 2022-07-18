@@ -25,7 +25,7 @@ def get_db():
 def index():
     return "hello"
 
-@app.post('/blog')
+@app.post('/blog', tags=['blogs'])
 def create(blog: Blog, db: Session = Depends(get_db)):
     new_blog = models.Blog(title=blog.title, body=blog.body)
     db.add(new_blog)
@@ -33,12 +33,12 @@ def create(blog: Blog, db: Session = Depends(get_db)):
     db.refresh(new_blog)
     return new_blog
 
-@app.get('/blog', response_model=List[ShowBlog])
+@app.get('/blog', response_model=List[ShowBlog], tags=['blogs'])
 def all_fetch(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
-@app.get('/blog/{id}', status_code=status.HTTP_200_OK, response_model=ShowBlog)
+@app.get('/blog/{id}', status_code=status.HTTP_200_OK, response_model=ShowBlog, tags=['blogs'])
 def show(id: int, response: Response, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blog:
@@ -48,7 +48,7 @@ def show(id: int, response: Response, db: Session = Depends(get_db)):
         #return {'detail': f'Blog with the id {id} is not available'}
     return blog
 
-@app.post('/blog', status_code=status.HTTP_201_CREATED)
+@app.post('/blog', status_code=status.HTTP_201_CREATED, tags=['blogs'])
 def create(blog:Blog, db: Session = Depends(get_db)):
     new_blog = models.Blog(title=blog.title, body=blog.bldy)
     db.add(new_blog)
@@ -56,7 +56,7 @@ def create(blog:Blog, db: Session = Depends(get_db)):
     db.refresh(new_blog)
     return new_blog
 
-@app.delete('/blog/{id}', status_code=status.HTTP_200_OK)
+@app.delete('/blog/{id}', status_code=status.HTTP_200_OK, tags=['blogs'])
 def delete(id: int, db:Session =  Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id)
     if not blog.first():
@@ -69,7 +69,7 @@ def delete(id: int, db:Session =  Depends(get_db)):
 
     return 'Deletion complete'
 
-@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED)
+@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED, tags=['blogs'])
 def update(id, request: Blog, db:Session =  Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id)
     if not blog.first():
@@ -85,7 +85,7 @@ def update(id, request: Blog, db:Session =  Depends(get_db)):
     
 #pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-@app.post('/user')
+@app.post('/user', tags=['users'])
 def create_user(request: User, db: Session = Depends(get_db)):
     #hashed_password = pwd_context.hash(request.password)
     # パスワードのハッシュ化
@@ -102,7 +102,7 @@ def create_user(request: User, db: Session = Depends(get_db)):
 
     return new_user
 
-@app.get('/user/{id}', response_model=ShowUser)
+@app.get('/user/{id}', response_model=ShowUser, tags=['users'])
 def get_user(id:int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == id).first()
     if not user:
