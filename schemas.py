@@ -6,10 +6,6 @@ class BlogBase(BaseModel):
     body: str
 
 class Blog(BlogBase):
-    #title: str
-    #body: str
-    #user_id:int
-
     class Config:
         orm_mode = True
 
@@ -35,9 +31,9 @@ class User(BaseModel):
     email: str
     password: str
 
-
-    #class Config:
-    #    orm_mode = True
+class Login(BaseModel):
+    email: str
+    password: str
 
 
 
