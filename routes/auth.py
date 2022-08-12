@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-import models
+import models, token_man
 from schemas import Login
 from database import get_db
 from sqlalchemy.orm import Session
@@ -23,5 +23,8 @@ def login(request: Login, db: Session = Depends(get_db)):
     if not pwd_context.verify(request.password, user.password):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                       detail = f'Incorrect password')
-       
-    return user
+
+    access_token = token_man.create_access_token(data={"sub": user.email})
+
+    return {"access_token": access_token, "token_type": "bearer"}
+    #return user

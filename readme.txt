@@ -13,6 +13,9 @@ pip3 install SQLAlchemy
 ●ハッシュ化ライブラリ
 pip3 install passlib bcrypt
 
+●JWTトークン用モジュール
+pip3 install python-jose
+
 ●webサーバ起動
 uvicorn main:app --reload [--host 0.0.0.0]
 
