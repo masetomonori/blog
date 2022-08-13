@@ -39,7 +39,6 @@ def update(id, request: Blog, db:Session):
 
     return 'Update completed'
 
-#def show(id: int, response: Response):
 def show(id: int, db:Session):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blog:
