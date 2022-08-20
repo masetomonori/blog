@@ -2,6 +2,8 @@ from typing import Optional
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from schemas import TokenData
+from sqlalchemy.orm import Session
+from functions.user import get_user
 
 SECRET_KEY = "4d3b3d8614c3f680eb8e3326ba6237209ccd5350f4ade42f26ac4573f289957b"
 ALGORITHM = "HS256"
@@ -19,15 +21,22 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
         return encoded_jwt
 
-def verify_token(token:str, credentials_exception):
+def verify_token(token:str, credentials_exception, db:Session):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
+        # idをトークンから取得
+        id: int = payload.get("id")
         if email is None:
             raise credentials_exception
         token_data = TokenData(email=email)
     except JWTError:
         raise credentials_exception
+
+    # user情報を取得
+    user = get_user(id, db)
+    return user
+
 
 
 
