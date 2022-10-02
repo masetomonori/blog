@@ -25,4 +25,12 @@ uvicorn main:app --reload [--host 0.0.0.0]
 ●仮想環境終了
 deactivate
 
+●nginx
+# 起動
+$ sudo nginx
+# 停止
+$ sudo nginx -s stop
+# 再起動
+$ sudo nginx -s reload
+
 

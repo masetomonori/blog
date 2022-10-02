@@ -31,6 +31,11 @@ class User(BaseModel):
     email: str
     password: str
 
+class Pxe(BaseModel):
+    BootDevice: str
+    BootType : str
+
+
 class Login(BaseModel):
     email: str
     password: str
